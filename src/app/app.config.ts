@@ -8,13 +8,13 @@ import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 //Interceptor
-// import {injectSessionInterceptor} from "./core/interceptors/inject-session.interceptor"
+import {injectSessionInterceptor} from "./core/interceptors/inject-session.interceptor"
 
 export const appConfig: ApplicationConfig = {
     providers: [
       provideZoneChangeDetection({ eventCoalescing: true }),
       provideRouter(routes),
-      provideHttpClient(withInterceptors([  ]), withFetch()),
+      provideHttpClient(withInterceptors([ injectSessionInterceptor ]), withFetch()),
       provideAnimationsAsync(),
       providePrimeNG({
         theme: {

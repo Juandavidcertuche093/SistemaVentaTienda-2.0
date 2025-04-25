@@ -1,0 +1,75 @@
+<div class="login-modal-content p-6 bg-white rounded-lg shadow-xl"> <div class="flex flex-col items-center justify-center mb-6 text-center">
+  <span class="text-blue-600 text-7xl mb-3">
+    <i class="pi pi-user"></i> </span>
+  <h2 class="text-3xl font-bold text-gray-800">Iniciar Sesión</h2>
+  <p class="text-sm text-gray-500 mt-1">Ingresa tus credenciales para acceder</p>
+</div>
+
+<form [formGroup]="formulariLogin" novalidate class="space-y-5" (submit)="login()">
+
+  <div class="relative">
+     <span class="p-float-label">
+        <input
+          id="name"
+          pInputText
+          type="text"
+          formControlName="name"
+          required
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          />
+        <label for="name">Nombre de Usuario</label>
+      </span>
+      <small *ngIf="formulariLogin.get('name')?.invalid && formulariLogin.get('name')?.touched"
+            class="block text-red-600 text-xs mt-1 ml-1">
+        <span *ngIf="formulariLogin.get('name')?.hasError('required')">El nombre es obligatorio.</span>
+        </small>
+  </div>
+
+
+  <div class="relative">
+    <span class="p-float-label">
+      <p-password
+        inputId="password"
+        formControlName="password"
+        [toggleMask]="true"
+        [feedback]="false"
+        promptLabel="Ingresa tu contraseña"
+        weakLabel="Débil"
+        mediumLabel="Media"
+        strongLabel="Fuerte"
+        styleClass="w-full"
+        inputStyleClass="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+      ></p-password>
+      <label for="password">Contraseña</label>
+    </span>
+    <small *ngIf="formulariLogin.get('password')?.invalid && formulariLogin.get('password')?.touched"
+           class="block text-red-600 text-xs mt-1 ml-1">
+      <span *ngIf="formulariLogin.get('password')?.hasError('required')">La contraseña es obligatoria.</span>
+      <span *ngIf="formulariLogin.get('password')?.hasError('minlength')">Debe tener al menos 6 caracteres.</span>
+    </small>
+  </div>
+
+
+  <p-progressBar mode="indeterminate" *ngIf="mostrarLoading" [style]="{'height': '6px'}"></p-progressBar>
+
+  <button
+    pButton
+    type="submit"
+    label="{{ mostrarLoading ? 'Ingresando...' : 'Iniciar Sesión' }}"
+    icon="{{ mostrarLoading ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in' }}"
+    iconPos="left"
+    [disabled]="formulariLogin.invalid || mostrarLoading"
+    class="w-full p-button-primary justify-center py-2.5 text-sm font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+    </button>
+
+</form>
+
+<div class="mt-8 text-center text-gray-500 text-xs">
+  <span>Copyright © {{ currentYear }} Licorera Digital Pro</span>
+</div>
+
+</div>
+
+
+
+
