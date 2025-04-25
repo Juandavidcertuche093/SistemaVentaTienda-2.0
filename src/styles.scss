@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+@tailwind base;
+}
+
+@layer tailwind-utilities {
+@tailwind components;
+@tailwind utilities;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Estilos para los SnackBars */
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.snackbar-success {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.snackbar-error {
+  background-color: #da1d10 !important;
+  color: white !important;
+}
+
+.snackbar-warning {
+  background-color: #e98f07 !important;
+  color: white !important;
+}
+
+.snackbar-info {
+  background-color: #2196f3 !important;
+  color: white !important;
+}
