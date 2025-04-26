@@ -1,1 +1,135 @@
-<p>categori-page works!</p>
+<div class="container mx-auto px-4 py-6 bg-slate-200 min-h-screen">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+    <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+      <mat-icon class="text-blue-600 mr-2">category</mat-icon>
+      Gestión de Categorías
+    </h2>
+      <button
+      pButton
+      type="button"
+      label="Nuevo Categoria"
+      icon="pi pi-plus"
+      class="p-button-primary p-button-raised flex items-center gap-2"
+      (click)="nuevaCategoria()">
+    </button>
+  </div>
+
+
+
+
+<mat-card-content class="mt-4">
+
+  <div class="mb-6 flex w-full items-center justify-between gap-4">
+    <span class="p-floatLabel w-full">
+      <p-iconField iconPosition="left">
+          <p-inputIcon class="pi pi-search text-gray-500"></p-inputIcon>
+
+          <input
+              id="searchProductsPrime"  type="text"
+              pInputText
+              #inputPrime                (keyup)="aplicarFiltroTabla($event, dt)"
+              placeholder="Buscar categoria"           class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 pl-10 pr-10 text-base text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+              />
+
+              <button
+              *ngIf="inputPrime.value"
+              type="button"
+              aria-label="Limpiar búsqueda"
+              class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer appearance-none border-none bg-transparent p-1 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+              (click)="inputPrime.value=''; dt.filterGlobal('', 'contains'); inputPrime.focus()"
+              >
+              <i class="pi pi-times text-lg"></i> </button>
+
+          <label
+              htmlFor="searchProductsPrime"
+              class="text-gray-600 dark:text-gray-400"
+          >
+
+          </label>
+      </p-iconField>
+      </span>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <p-table [value]="listaCategoria"
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10,20,30]"
+    [stripedRows]="true"
+    [globalFilterFields]="['nombre', 'idCategoria']"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} categorías"
+    #dt
+    styleClass="p-datatable-striped p-datatable-gridlines p-datatable-sm">
+
+      <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="idCategoria" class="text-center w-1/6">ID <p-sortIcon field="idCategoria"></p-sortIcon></th>
+        <th pSortableColumn="nombre" class="text-center w-2/5">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="esActivo" class="text-center w-1/5">Estado <p-sortIcon field="esActivo"></p-sortIcon></th>
+        <th class="text-right w-1/4"></th>
+      </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-categoria>
+      <tr>
+        <td class="text-center font-medium text-gray-600">{{ categoria.idCategoria }}</td>
+        <td class="text-center">
+          <div class="flex items-center justify-center">
+            <mat-icon class="mr-2 text-gray-400">label</mat-icon>
+            <span class="font-medium">{{ categoria.nombre }}</span>
+          </div>
+        </td>
+        <td class="text-center">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                [class.bg-green-100]="categoria.esActivo == 1"
+                [class.text-green-800]="categoria.esActivo == 1"
+                [class.bg-red-100]="categoria.esActivo != 1"
+                [class.text-red-800]="categoria.esActivo != 1">
+            <mat-icon class="mr-1 text-sm" [class.text-green-500]="categoria.esActivo == 1" [class.text-red-500]="categoria.esActivo != 1">
+              {{ categoria.esActivo == 1 ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            {{ categoria.esActivo == 1 ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="!py-4 !px-6">
+          <div class="flex justify-end gap-2">
+            <button mat-icon-button color="primary"
+                    (click)="editarCategoria(categoria)"
+                    matTooltip="Editar"
+                    class="!bg-blue-50 hover:!bg-blue-100">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn"
+                    (click)="eliminarCategoria(categoria)"
+                    matTooltip="Eliminar"
+                    class="!bg-red-50 hover:!bg-red-100">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center py-8">
+          <div class="flex flex-col items-center justify-center text-gray-500">
+            <mat-icon class="text-4xl mb-2">category</mat-icon>
+            <p class="text-lg">No se encontraron categorías</p>
+            <button mat-raised-button color="primary" (click)="nuevaCategoria()" class="mt-2">
+              <mat-icon>add</mat-icon>
+              Agregar primera categoría
+            </button>
+          </div>
+        </td>
+      </tr>
+      </ng-template>
+      </p-table>
+  </div>
+
+
+</mat-card-content>
+</div>
+
+
