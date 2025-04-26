@@ -1,0 +1,122 @@
+<mat-toolbar class="mat-elevation-z3" color="warn">
+  <mat-toolbar-row>
+    <div class="flex items-center">
+      <h1 class="font-bold text-2xl tracking-tight">
+        TIENDA <span class="bg-[#f84525] text-white px-2 py-1 rounded-md font-black">VIEJA</span>
+      </h1>
+    </div>
+
+
+    <span class="flex-auto"></span>
+
+
+    <div class="flex items-center gap-4 mr-4">
+      <button mat-icon-button
+              [matMenuTriggerFor]="notificationMenu"
+              class="relative hover:bg-gray-100 rounded-full"
+              aria-label="Notificaciones">
+        <mat-icon class="text-gray-700"
+                  matBadge="{{ productosStockBajo.length > 0 ? productosStockBajo.length : '' }}"
+                  matBadgeColor="warn"
+                  matBadgeSize="small"
+                  matBadgePosition="above after"
+                  aria-hidden="false">
+          notifications
+        </mat-icon>
+      </button>
+
+      <mat-menu #notificationMenu="matMenu" xPosition="before" class="mt-2 shadow-xl">
+        <div class="px-4 py-3 text-lg font-semibold border-b border-gray-200 bg-gray-50">
+          Notificaciones
+          <span *ngIf="productosStockBajo.length > 0" class="ml-2 text-sm font-normal text-gray-500">
+            ({{ productosStockBajo.length }})
+          </span>
+        </div>
+
+        <div class="max-h-80 overflow-y-auto w-72">
+          <ng-container *ngIf="productosStockBajo.length > 0; else noNotifications">
+            <button mat-menu-item *ngFor="let producto of productosStockBajo" class="!py-3 !px-4 hover:!bg-red-50">
+              <div class="w-full space-y-1">
+                <p class="text-base font-semibold text-red-600 flex items-center">
+                  <mat-icon class="!text-lg !w-4 !h-4 mr-2 text-red-500">warning</mat-icon>
+                  {{ producto.nombre }}
+                </p>
+                <p class="text-sm text-gray-500">Stock bajo: {{ producto.stockActual }} unidades</p>
+              </div>
+            </button>
+          </ng-container>
+
+          <ng-template #noNotifications>
+            <div class="py-6 text-center">
+              <mat-icon class="!text-4xl !w-12 !h-12 text-gray-300 mb-2">notifications_off</mat-icon>
+              <p class="text-gray-500 px-4">No hay notificaciones nuevas</p>
+            </div>
+          </ng-template>
+        </div>
+      </mat-menu>
+
+
+      <div class="flex items-center gap-2">
+        <div class="text-right hidden md:block">
+          <p class="text-sm font-medium text-white leading-tight">{{ user()?.nombreCompleto }}</p>
+          <p class="text-sm text-white">{{ user()?.rolDescripcion }}</p>
+        </div>
+
+        <button mat-icon-button
+                (click)="logout()"
+                class="hover:bg-gray-100 rounded-full"
+                matTooltip="Cerrar sesión"
+                aria-label="Cerrar sesión">
+          <mat-icon class="text-gray-700">logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="layout-container">
+  <aside class="sidebar">
+    <nav>
+      <ul class="sidebar-menu">
+        <li *ngFor="let menu of listaMenus; let i = index">
+          <a href="javascript:void(0)"
+             (click)="toggleSubMenu(menu)"
+             [routerLink]="menu.url"
+             routerLinkActive="selected-menu-item"
+             class="menu-item"
+             #rla="routerLinkActive">
+            <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
+              {{ menu.icono }}
+            </mat-icon>
+            <span>{{ menu.nombre }}</span>
+            <mat-icon *ngIf="menu.submenus.length > 0" class="submenu-arrow">
+              {{ menu.expanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+          </a>
+          <ul *ngIf="menu.submenus.length > 0 && menu.expanded" class="submenu-list">
+            <li *ngFor="let sub of menu.submenus">
+              <a [routerLink]="['/', menu.url, sub.url]"
+                 routerLinkActive="selected-menu-item"
+                 class="submenu-item">
+                <mat-icon>{{ sub.icono }}</mat-icon>
+                <span>{{ sub.nombre }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="main-content  h-[calc(100vh-4rem)]">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+
+
+
+
+
+
+
+
