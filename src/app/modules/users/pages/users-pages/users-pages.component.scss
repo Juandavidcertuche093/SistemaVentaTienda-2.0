@@ -1,0 +1,99 @@
+/* Estilos generales para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Elimina el espacio entre las celdas de la tabla */
+}
+
+.mat-elevation-z2 {
+  overflow-x: auto; /* Evita desbordamiento horizontal si la tabla es más grande que el contenedor */
+}
+
+mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Alineación centralizada de los encabezados de las tablas */
+th.mat-header-cell, td.mat-cell {
+  text-align: center;
+  padding: 8px; /* Agrega espacio alrededor del texto en las celdas */
+}
+
+/* Ajusta la columna de acciones */
+.acciones-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* Espacio entre los botones */
+  padding: 8px 0; /* Mantiene el padding vertical uniforme */
+}
+
+/* Tamaño de los botones para que no distorsionen el tamaño de las celdas */
+.mat-icon-button {
+  height: 36px; /* Tamaño consistente para los botones */
+  width: 36px;
+}
+
+/* Tamaño consistente para los íconos */
+.mat-icon {
+  font-size: 24px; /* Ajusta el tamaño del ícono */
+}
+
+/* Estilos para la tabla */
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  /* Estilo para el encabezado de la tabla */
+  .mat-header-cell {
+    background-color: #3F51B5; /* Azul oscuro para el encabezado */
+    color: white; /* Texto en blanco */
+    font-weight: bold;
+    padding: 12px;
+    text-align: left;
+  }
+
+  /* Estilo para las celdas de la tabla */
+  .mat-cell {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0; /* Línea divisoria entre filas */
+  }
+
+  /* Estilo para la primera columna */
+  .mat-column-nombreCompleto {
+    background-color: #1A237E; /* Azul más oscuro para la primera columna */
+    color: white; /* Texto en blanco */
+    font-weight: bold;
+  }
+
+  /* Estilo para las filas al pasar el mouse (hover) */
+  .mat-row:hover {
+    background-color: #E3F2FD; /* Azul claro al pasar el mouse */
+    cursor: pointer;
+  }
+
+  /* Estilo para la fila de "No hay datos" */
+  .mat-row.mat-no-data-row {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #757575;
+  }
+}
+
+/* Estilo para los botones de acciones */
+button[mat-icon-button].edit-button {
+  color: #3F51B5; /* Azul para el botón de editar */
+}
+
+button[mat-icon-button].delete-button {
+  color: #F44336; /* Rojo para el botón de eliminar */
+}
+
+/* Estilo para el paginador */
+.mat-paginator {
+  background-color: #f5f5f5; /* Fondo gris claro */
+  border-top: 1px solid #e0e0e0; /* Línea divisoria */
+  padding: 10px;
+}
+

@@ -1,0 +1,97 @@
+<p mat-dialog-title class="text-center text-2xl font-bold text-gray-800 pb-6 mb-4 border-b-2 border-gray-300">
+  {{ tituloAccion }} Usuario
+</p>
+
+<mat-dialog-content class="pt-6">
+  <form [formGroup]="formularioUsuario" class="space-y-6">
+
+    <div class="field flex flex-col gap-2">
+      <label htmlFor="nombreCompleto" class="font-medium text-gray-700">Nombre Completo</label>
+      <input
+        pInputText
+        id="nombreCompleto"
+        type="text"
+        formControlName="nombreCompleto"
+        class="p-inputtext-lg w-full"  placeholder="Ingrese el nombre completo"
+        autocomplete="off"
+        aria-describedby="nombreCompleto-help"
+      />
+      <small id="nombreCompleto-help" class="p-error block text-red-700" *ngIf="formularioUsuario.get('nombreCompleto')?.invalid && formularioUsuario.get('nombreCompleto')?.touched">
+        <i class="pi pi-exclamation-triangle mr-1 text-red-700"></i> El nombre es obligatorio.
+      </small>
+    </div>
+
+    <div class="field flex flex-col gap-2">
+      <label htmlFor="idRol" class="font-medium text-gray-700">Rol</label>
+      <p-select
+        id="idRol"
+        [options]="listaRoles"
+        formControlName="idRol"
+        optionLabel="nombre"
+        optionValue="idRol"
+        placeholder="Seleccione un Rol"
+        [showClear]="true"
+        styleClass="w-full"
+        appendTo="body"
+        aria-describedby="idRol-help"
+      ></p-select>
+      <small id="idRol-help" class="p-error block text-red-700" *ngIf="formularioUsuario.get('idRol')?.invalid && formularioUsuario.get('idRol')?.touched">
+         <i class="pi pi-exclamation-triangle mr-1 text-red-700"></i> Debe seleccionar un rol.
+       </small>
+    </div>
+
+    <div class="field flex flex-col gap-2">
+      <label htmlFor="clave" class="font-medium text-gray-700">Contraseña</label>
+
+      <p-password
+        id="clave"
+        formControlName="clave"
+        [feedback]="true"
+        toggleMask="true"
+        styleClass="w-full"
+        [inputStyle]="{ width: '100%' }"
+        placeholder="Ingrese la contraseña"
+        aria-describedby="clave-help"
+      ></p-password>
+
+      <small id="clave-help" class="p-error block" *ngIf="formularioUsuario.get('clave')?.invalid && formularioUsuario.get('clave')?.touched && formularioUsuario.get('clave')?.hasError('minlength')">
+        <i class="pi pi-exclamation-triangle mr-1"></i> La contraseña debe tener al menos 7 caracteres.
+      </small>
+      <small *ngIf="tituloAccion === 'Agregar' && formularioUsuario.get('clave')?.hasError('required') && formularioUsuario.get('clave')?.touched" class="p-error block">
+        <i class="pi pi-exclamation-triangle mr-1"></i> La contraseña es obligatoria al crear un usuario.
+      </small>
+    </div>
+
+
+    <div class="field flex flex-col gap-2">
+      <label htmlFor="esActivo" class="font-medium text-gray-700">Estado</label>
+      <p-select
+        id="esActivo"
+        [options]="estadosUsuario"  formControlName="esActivo"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Seleccione el estado"
+        styleClass="w-full"
+        appendTo="body"
+        aria-describedby="esActivo-help"
+      ></p-select>
+       <small id="esActivo-help" class="p-error block" *ngIf="formularioUsuario.get('esActivo')?.invalid && formularioUsuario.get('esActivo')?.touched">
+         <i class="pi pi-exclamation-triangle mr-1"></i> Debe seleccionar un estado.
+       </small>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pt-6 pb-4 px-6 border-t border-gray-200">
+  <button mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formularioUsuario.invalid"
+    (click)="guardarEditar_usuario()"
+    class="ml-2"
+  >
+    {{ botonAccion }}
+  </button>
+
+  </mat-dialog-actions>
