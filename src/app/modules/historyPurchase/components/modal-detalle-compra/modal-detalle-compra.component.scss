@@ -1,0 +1,45 @@
+table{
+  width: 100%;
+}
+
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 24px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.info-card {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.summary-card {
+  padding: 16px;
+  min-width: 300px;
+  background-color: #f8fafc;
+}
+
+/* En tu archivo de estilos CSS o SCSS */
+table.mat-table {
+  font-size: 1.1rem; /* Tamaño base más grande */
+}
+
+/* Para los headers */
+.mat-header-cell {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* Para las celdas */
+.mat-cell {
+  font-size: 1.1rem;
+}
+
+::ng-deep [mat-dialog-title] {
+  color: white !important;
+}

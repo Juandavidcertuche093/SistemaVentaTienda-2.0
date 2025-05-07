@@ -1,0 +1,97 @@
+ <div class="modal-header bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+  <h2 mat-dialog-title class="flex items-center gap-2">
+    <mat-icon>receipt</mat-icon>
+    Detalle de Compra
+  </h2>
+</div>
+
+<mat-dialog-content>
+
+        <mat-grid-list cols="4" rowHeight="70px">
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Fecha Registro</mat-label>
+                    <input matInput [(ngModel)]="fechaCompra">
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Numero Venta</mat-label>
+                    <input matInput [(ngModel)]="numCompra">
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Tipo Pago</mat-label>
+                    <input matInput [(ngModel)]="tipoPago">
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Total</mat-label>
+                    <input matInput [(ngModel)]="total">
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+        </mat-grid-list>
+
+
+
+        <h3 class="text-lg font-semibold text-gray-700 flex items-center gap-3 p-3">
+          <mat-icon>shopping_cart</mat-icon>
+          Productos Vendidos
+        </h3>
+
+        <table mat-table [dataSource]="detalleCompra" class="w-full mat-elevation-z1 rounded-lg">
+
+          <ng-container matColumnDef="producto">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-gray-700">Producto</th>
+            <td mat-cell *matCellDef="let element" class="font-medium">
+              {{element.descripcionProductoEmpaque}}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-gray-700 text-right">Cantidad</th>
+            <td mat-cell *matCellDef="let element" class="text-right">
+              {{element.cantidad}}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-gray-700 text-right">Precio Unitario</th>
+            <td mat-cell *matCellDef="let element" class="text-right">
+              {{element.precioTexto}}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-gray-700 text-right">Total</th>
+            <td mat-cell *matCellDef="let element" class="text-right font-semibold text-blue-600">
+              {{element.totalTexto}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnasTabla" class="bg-gray-50"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnasTabla;"
+              class="hover:bg-gray-50 transition-colors"></tr>
+        </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button mat-dialog-close cdkFocusInitial color="warn">Volver</button>
+</mat-dialog-actions>
+
+
+
