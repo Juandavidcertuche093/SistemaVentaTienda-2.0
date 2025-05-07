@@ -1,0 +1,95 @@
+ <h2 mat-dialog-title class="text-center text-lg font-semibold">
+  {{ tituloAccion }} Producto
+  </h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formularioProduncto" class="space-y-4">
+
+    <!-- Nombre -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off" />
+      <mat-icon matSuffix>inventory</mat-icon>
+      <mat-error *ngIf="formularioProduncto.get('nombre')?.hasError('required')">
+        El nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Categoría -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="idCategoria">
+        <mat-option *ngFor="let item of listaCategoria" [value]="item.idCategoria">
+          {{ item.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProduncto.get('idCategoria')?.hasError('required')">
+        La categoría es requerida.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Proveedor -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Proveedor</mat-label>
+      <mat-select formControlName="idProveedor">
+        <mat-option *ngFor="let item of listaProveedor" [value]="item.idProveedor">
+          {{ item.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProduncto.get('idProveedor')?.hasError('required')">
+        El proveedor es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Imagen -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Imagen del Producto</mat-label>
+      <mat-select formControlName="idImagen">
+        <mat-option *ngFor="let item of listaImagenProducto" [value]="item.idImagen">
+          {{ item.nombreArchivo }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProduncto.get('idImagen')?.hasError('required')">
+        La imagen del producto es requerida.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Precio -->
+    <!-- <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Precio de Compra</mat-label>
+      <input matInput type="number" formControlName="precioCompra" autocomplete="off" />
+      <mat-icon matSuffix>attach_money</mat-icon>
+      <mat-error *ngIf="formularioProduncto.get('precioCompra')?.hasError('required')">
+        El precio es requerido.
+      </mat-error>
+      <mat-error *ngIf="formularioProduncto.get('precioCompra')?.hasError('positivo')">
+        El precio debe ser un número positivo.
+      </mat-error>
+    </mat-form-field> -->
+
+    <!-- Estado -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="esActivo">
+        <mat-option value="1">Activo</mat-option>
+        <mat-option value="0">No activo</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProduncto.get('esActivo')?.hasError('required')">
+        El estado es requerido.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pt-4">
+  <button mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formularioProduncto.invalid"
+    (click)="GuardarEditar_Producto()"
+  >
+    {{ botonAccion }}
+  </button>
+</mat-dialog-actions>
+
