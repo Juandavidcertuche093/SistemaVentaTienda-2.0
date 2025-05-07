@@ -83,13 +83,13 @@ export class CategoriPageComponent {
           this.listaCategoria = data.value
         } else {
           this.listaCategoria = [] //limpia la lista de los datos
-          this.utilidadServicio.mostrarAlerta('No se encontraron datos', 'warning');
+          this.utilidadServicio.mostrarAlerta('Error al obtener categorias', 'error');
         }
         this.loading = false //termina la carga
       },
       error: (e) => {
         this.loading = false; // Termina carga en caso de error
-        this.utilidadServicio.mostrarAlerta('Error al obtener categorias', 'error');
+        // this.utilidadServicio.mostrarAlerta('Error al obtener categorias', 'error');
       }
     })
   }
