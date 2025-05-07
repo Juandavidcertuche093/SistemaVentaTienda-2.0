@@ -1,1 +1,113 @@
-<p>saleshistory-pages works!</p>
+<div class="min-h-screen bg-gray-50 p-4 md:p-6">
+  <!-- Search Card -->
+  <mat-card class="shadow-lg mb-8 overflow-hidden">
+    <mat-card-header class="bg-[#0F172A] p-4">
+      <mat-card-title class="text-white">Filtros de Búsqueda</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="p-4">
+      <form [formGroup]="formularioBusqueda" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Search Type -->
+        <mat-form-field >
+          <mat-label>Buscar por</mat-label>
+          <mat-select formControlName="buscarPor">
+              <mat-option *ngFor="let item of opcionesBusqueda" [value]="item.value">
+                  {{item.descripcion}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+        <!-- Dynamic Fields -->
+        <ng-container *ngIf="formularioBusqueda.value.buscarPor === 'numero'; else fechaFields">
+          <mat-form-field  class="w-full md:col-span-3">
+            <mat-label>Número de Venta</mat-label>
+            <input matInput formControlName="numero" placeholder="Ingrese el número de venta">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-template #fechaFields>
+          <mat-form-field appearance="fill" *ngIf="formularioBusqueda.value.buscarPor == 'fecha'">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput autocomplete="off" formControlName="fechaInicio" [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" *ngIf="formularioBusqueda.value.buscarPor == 'fecha'">
+            <mat-label>Fecha Fin</mat-label>
+            <input matInput autocomplete="off" formControlName="fechaFin" [matDatepicker]="picker2">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        </ng-template>
+
+        <!-- Search Button -->
+        <div class="flex items-end md:col-start-4">
+          <button
+            pButton
+            icon="pi pi-search"
+            label="Buscar"
+            class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 transition-colors"
+            (click)="buscarVentas()">
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Results Card -->
+  <mat-card class="shadow-lg mb-8 overflow-hidden">
+    <mat-card-header class="bg-[#0F172A] p-4">
+      <mat-card-title class="text-white">Resultados</mat-card-title>
+    </mat-card-header>
+
+    <p-table
+    [value]="dataListaVenta.data"
+    [paginator]="true"
+    [rows]="20"
+    [rowsPerPageOptions]="[20, 30, 40]"
+>
+    <ng-template pTemplate="header">
+      <tr>
+        <th><mat-icon class="text-blue-700">event</mat-icon> Fecha</th>
+        <th><mat-icon class="text-blue-700">receipt</mat-icon> N° Venta</th>
+        <th><mat-icon class="text-blue-700">payments</mat-icon> Tipo Pago</th>
+        <th><mat-icon class="text-blue-700">attach_money</mat-icon> Total</th>
+        <th><mat-icon class="text-blue-700">person</mat-icon> Usuario</th>
+        <th class="text-center"><mat-icon class="text-blue-700"></mat-icon></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-venta>
+        <tr>
+            <td>{{ venta.fechaRegistro }}</td>
+            <td>{{ venta.numVenta }}</td>
+            <td>{{ venta.tipoPago }}</td>
+            <td>{{ venta.totalTexto }}</td>
+            <td>{{ venta.usuarioDescripcion }}</td>
+            <td class="flex gap-2">
+                <button pButton icon="pi pi-eye" class="p-button-rounded p-button-info p-mr-2" (click)="verDetalleVenta(venta)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="text-center p-4">
+          No hay datos que coincidan con el filtro
+        </td>
+      </tr>
+    </ng-template>
+</p-table>
+
+  </mat-card>
+</div>
+
+
+
+
+
+
+
+
+
+
+
