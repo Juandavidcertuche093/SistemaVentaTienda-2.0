@@ -1,0 +1,129 @@
+/* Fondo general */
+:host {
+  display: block;
+  background: #f1f5f9;
+  min-height: 100vh;
+}
+
+/* Card principal */
+mat-card {
+  border-radius: 18px;
+  box-shadow: 0 4px 24px #0001;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Header del reporte */
+mat-card-header {
+  background: linear-gradient(90deg, #0F172A 80%, #2563eb 100%);
+  color: #fff !important;
+  padding: 1.5rem 1rem;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+mat-card-subtitle {
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+/* Formulario de filtros */
+form {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px #0001;
+}
+
+mat-form-field {
+  background: #fff;
+  border-radius: 8px;
+}
+
+button[mat-raised-button] {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px #2563eb22;
+  transition: background 0.2s;
+}
+
+button[mat-raised-button]:hover {
+  background: #03102b;
+}
+
+/* PrimeNG Table */
+::ng-deep .p-table {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0001;
+  font-size: 1rem;
+}
+
+::ng-deep .p-table thead th {
+  background: #0F172A;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 2px solid #2563eb;
+}
+
+::ng-deep .p-table tbody tr {
+  transition: background 0.2s;
+}
+
+::ng-deep .p-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+::ng-deep .p-table tbody td {
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+::ng-deep .p-paginator {
+  background: transparent;
+  border: none;
+}
+
+/* Tarjetas de resumen */
+.mat-card.bg-blue-50 {
+  background: linear-gradient(90deg, #e0e7ff 60%, #f1f5f9 100%) !important;
+  border-left: 5px solid #2563eb;
+}
+.mat-card.bg-green-50 {
+  background: linear-gradient(90deg, #dcfce7 60%, #f1f5f9 100%) !important;
+  border-left: 5px solid #22c55e;
+}
+.mat-card.bg-yellow-50 {
+  background: linear-gradient(90deg, #fef9c3 60%, #f1f5f9 100%) !important;
+  border-left: 5px solid #eab308;
+}
+
+.mat-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.mat-card-content {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  mat-card-header {
+    padding: 1rem 0.5rem;
+  }
+  form {
+    padding: 0.5rem;
+  }
+  .mat-card-content {
+    font-size: 1.3rem;
+  }
+}

@@ -1,1 +1,143 @@
-<p>report-page works!</p>
+<div class="container mx-auto px-4 py-6 bg-slate-200 min-h-screen">
+
+  <mat-card-header class="bg-[#0F172A] text-white p-6 flex flex-col md:flex-row md:items-center md:justify-between">
+    <div>
+      <mat-card-title class="text-2xl font-bold flex items-center gap-2">
+        <mat-icon class="mr-2 text-yellow-400">bar_chart</mat-icon>
+        Reporte de Ventas
+      </mat-card-title>
+      <mat-card-subtitle class="text-gray-200 text-base mt-1">Consulta y exporta tus reportes de ventas</mat-card-subtitle>
+    </div>
+    <div class="hidden md:flex items-center gap-4">
+      <mat-icon class="text-4xl text-blue-200">analytics</mat-icon>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content class="p-6">
+
+    <!-- Filtros -->
+    <form [formGroup]="formularioFiltro" class="bg-white rounded-xl shadow-md p-4 mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 border border-blue-50">
+
+      <mat-form-field class="w-full">
+        <mat-label>Fecha Inicio</mat-label>
+        <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio">
+        <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+        <mat-datepicker #pickerInicio></mat-datepicker>
+        <mat-error *ngIf="formularioFiltro.get('fechaInicio')?.hasError('required')">
+          Fecha inicio es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field  class="w-full">
+        <mat-label>Fecha Fin</mat-label>
+        <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin">
+        <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFin></mat-datepicker>
+        <mat-error *ngIf="formularioFiltro.get('fechaFin')?.hasError('required')">
+          Fecha fin es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <div class="flex items-end gap-2">
+        <button mat-raised-button color="primary" (click)="buscarVentas()" class="flex-1">
+          <mat-icon>search</mat-icon>
+          Buscar
+        </button>
+        <p-button [disabled]="listaVentasReporte.length < 1"
+                 label="Exportar PDF"
+                 icon="pi pi-file-pdf"
+                 severity="danger"
+                 styleClass="h-12 flex-1 bg-red-600 hover:bg-red-700 transition-colors duration-200 font-semibold text-base"
+                 (click)="exportarPDF()">
+        </p-button>
+      </div>
+    </form>
+
+    <!-- Tabla de Reporte -->
+    <div class="overflow-x-auto rounded-xl shadow border border-blue-50 bg-white">
+      <div style="min-width: 1200px;">
+        <p-table
+        class="min-w-[1200px]"
+        [value]="dataVentaReporte.data"
+        [paginator]="true"
+        [rows]="20"
+        [rowsPerPageOptions]="[20, 30, 40]"
+        [stripedRows]="true"
+        [globalFilterFields]="['nombre', 'descripcionCategoria', 'precio', 'stock']"
+        #dt
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th><mat-icon class="text-blue-700">event</mat-icon> Fecha</th>
+            <th><mat-icon class="text-blue-700">receipt</mat-icon> N° Venta</th>
+            <th><mat-icon class="text-blue-700">credit_card</mat-icon> Pago</th>
+            <th><mat-icon class="text-blue-700">attach_money</mat-icon> Total</th>
+            <th><mat-icon class="text-blue-700">sell</mat-icon> Producto</th>
+            <th><mat-icon class="text-blue-700">category</mat-icon> Presentación</th>
+            <th><mat-icon class="text-blue-700">inventory_2</mat-icon> Cantidad</th>
+            <th><mat-icon class="text-blue-700">sell</mat-icon> Precio</th>
+            <th><mat-icon class="text-blue-700">calculate</mat-icon> Total Producto</th>
+            <th><mat-icon class="text-blue-700">person</mat-icon> Usuario</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reporte>
+          <tr>
+            <td>{{ reporte.fechaRegistro }}</td>
+            <td>{{ reporte.numeroVenta }}</td>
+            <td>{{ reporte.tipoPago }}</td>
+            <td>{{ reporte.totalVenta }}</td>
+            <td>{{ reporte.nombreProducto }}</td>
+            <td>{{ reporte.presentacion }}</td>
+            <td>{{ reporte.cantidad }}</td>
+            <td>{{ reporte.precio }}</td>
+            <td>{{ reporte.total }}</td>
+            <td>{{ reporte.usuario }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+
+
+    <!-- <div *ngIf="listaVentasReporte.length > 0" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <mat-card class="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-600 shadow">
+        <mat-card-header>
+          <mat-card-title class="text-blue-800 flex items-center gap-2">
+            <mat-icon class="text-blue-600">summarize</mat-icon>
+            Total Ventas
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="text-3xl font-bold text-blue-900">
+          ${{getTotalVentas() | number}}
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="bg-gradient-to-r from-green-100 to-green-50 border-l-4 border-green-600 shadow">
+        <mat-card-header>
+          <mat-card-title class="text-green-800 flex items-center gap-2">
+            <mat-icon class="text-green-600">payments</mat-icon>
+            Ventas Efectivo
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="text-3xl font-bold text-green-900">
+          ${{getTotalPorTipoPago('Efectivo') | number}}
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="bg-gradient-to-r from-yellow-100 to-yellow-50 border-l-4 border-yellow-500 shadow">
+        <mat-card-header>
+          <mat-card-title class="text-yellow-800 flex items-center gap-2">
+            <mat-icon class="text-yellow-600">credit_card</mat-icon>
+            Ventas Tarjeta
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="text-3xl font-bold text-yellow-900">
+          ${{getTotalPorTipoPago('Tarjeta') | number}}
+        </mat-card-content>
+      </mat-card>
+    </div> -->
+
+  </mat-card-content>
+</div>
+
+
