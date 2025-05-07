@@ -1,0 +1,56 @@
+<h2 mat-dialog-title class="text-center w-full">{{ tituloAccion }} Proveedor</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formularioProveedor">
+    <mat-grid-list cols="1" rowHeight="80px">
+
+       <!-- primera fila nombre-->
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>nombre</mat-label>
+            <input matInput autocomplete="off" formControlName="nombre">
+            <mat-icon matSuffix>fit_screen</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>Direccion</mat-label>
+            <input matInput autocomplete="off" formControlName="direccion">
+            <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>Contacto</mat-label>
+            <input matInput autocomplete="off" formControlName="contacto">
+            <mat-icon matSuffix>contact_phone</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="esActivo">
+                <mat-option value="1">Activo</mat-option>
+                <mat-option value="0">No activo</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-grid-tile>
+
+    </mat-grid-list>
+
+  </form>
+
+</mat-dialog-content>
+
+<!-- botones -->
+<mat-dialog-actions align="center">
+  <button mat-raised-button mat-dialog-close color="warn">Volver</button>
+  <button mat-raised-button color="primary"
+      [disabled]="formularioProveedor.invalid"
+      (click)="guardarEditar_Proveedor()"
+  >{{botonAccion}}</button>
+</mat-dialog-actions>
+
