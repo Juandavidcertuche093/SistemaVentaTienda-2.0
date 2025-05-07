@@ -1,1 +1,160 @@
-<p>imagenes-page works!</p>
+<div class="container mx-auto px-4 py-6 bg-slate-200 min-h-screen">
+  <div
+    class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"
+  >
+    <div class="flex items-center space-x-4">
+      <mat-icon class="text-blue-500">collections</mat-icon>
+      <h2 class="text-2xl font-semibold">Gestión de Imágenes</h2>
+    </div>
+    <!-- <button mat-raised-button color="primary" (click)="nuevaImagen()">
+      <mat-icon>add_photo_alternate</mat-icon>
+      Nueva Imagen
+    </button> -->
+    <button
+      pButton
+      type="button"
+      label="Nueva Imagen"
+      icon="pi pi-image"
+      class="p-button-primary p-button-raised flex items-center gap-2"
+      (click)="nuevaImagen()"
+    ></button>
+  </div>
+
+  <!-- <mat-divider class="!my-4"></mat-divider> -->
+
+  <mat-card-content class="mt-4">
+    <!-- Buscador de productos -->
+    <div class="mb-6 flex w-full items-center justify-between gap-4">
+      <span class="p-floatLabel w-full">
+        <p-iconField iconPosition="left">
+          <p-inputIcon class="pi pi-search text-gray-500"></p-inputIcon>
+
+          <input
+            id="searchProductsPrime"
+            type="text"
+            pInputText
+            #inputPrime
+            (keyup)="aplicarFiltroTabla($event, dt)"
+            placeholder="Buscar nombre de imagen"
+            class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 pl-10 pr-10 text-base text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+          />
+
+          <button
+            *ngIf="inputPrime.value"
+            type="button"
+            aria-label="Limpiar búsqueda"
+            class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer appearance-none border-none bg-transparent p-1 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+            (click)="
+              inputPrime.value = '';
+              dt.filterGlobal('', 'contains');
+              inputPrime.focus()
+            "
+          >
+            <i class="pi pi-times text-lg"></i>
+          </button>
+
+          <label
+            htmlFor="searchProductsPrime"
+            class="text-gray-600 dark:text-gray-400"
+          >
+          </label>
+        </p-iconField>
+      </span>
+    </div>
+
+    <div
+      class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+    >
+      <p-table
+        [value]="listaImagenProducto"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 20, 30]"
+        [stripedRows]="true"
+        [globalFilterFields]="['nombreArchivo', 'ruta']"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} imágenes"
+        #dt
+        styleClass="p-datatable-striped p-datatable-gridlines"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="nombreArchivo" class="w-1/4">
+              Nombre <p-sortIcon field="nombreArchivo"></p-sortIcon>
+            </th>
+            <th class="w-1/2">URL de la Imagen</th>
+            <th class="w-1/4 text-right"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-imagenProducto>
+          <tr>
+            <td class="font-medium">
+              <div class="flex items-center">
+                <mat-icon class="mr-2 text-gray-500">image</mat-icon>
+                {{ imagenProducto.nombreArchivo }}
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center">
+                <a
+                  [href]="imagenProducto.ruta"
+                  target="_blank"
+                  class="text-blue-500 hover:underline truncate max-w-xs"
+                >
+                  {{ imagenProducto.ruta }}
+                </a>
+                <!-- <button mat-icon-button (click)="copiarUrl(imagenProducto.ruta)" matTooltip="Copiar URL">
+            <mat-icon class="text-gray-500 hover:text-blue-500">content_copy</mat-icon>
+          </button> -->
+              </div>
+            </td>
+            <td class="!py-4 !px-6">
+              <div class="flex justify-end gap-2">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="editarImagenProducto(imagenProducto)"
+                  matTooltip="Editar"
+                  class="!bg-blue-50 hover:!bg-blue-100"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="eliminarImagenProducto(imagenProducto)"
+                  matTooltip="Eliminar"
+                  class="!bg-red-50 hover:!bg-red-100"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center py-8">
+              <div
+                class="flex flex-col items-center justify-center text-gray-500"
+              >
+                <mat-icon class="text-4xl mb-2">image_not_supported</mat-icon>
+                <p class="text-lg">No se encontraron imágenes</p>
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="nuevaImagen()"
+                  class="mt-2"
+                >
+                  Agregar primera imagen
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </mat-card-content>
+</div>

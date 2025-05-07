@@ -1,0 +1,43 @@
+<h2 mat-dialog-title class="text-center w-full">{{ tituloAccion }} ImagenProducto</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="formularioImagenProducto">
+        <mat-grid-list cols="1" rowHeight="80px">
+
+            <!-- primera fila nombre-->
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>nombre</mat-label>
+                    <input matInput autocomplete="off" formControlName="nombreArchivo">
+                    <mat-icon matSuffix>fit_screen</mat-icon>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <!-- quinta fila estado -->
+            <mat-grid-tile>
+              <mat-form-field appearance="fill">
+                  <mat-label>ruta_URL</mat-label>
+                  <input matInput autocomplete="off" formControlName="ruta">
+                  <mat-icon matSuffix>link</mat-icon>
+              </mat-form-field>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+    </form>
+</mat-dialog-content>
+
+<!-- botones -->
+<mat-dialog-actions align="center">
+    <button mat-raised-button mat-dialog-close color="warn">Volver</button>
+    <button mat-raised-button color="primary"
+        [disabled]="formularioImagenProducto.invalid"
+        (click)="guardarEditar_imagenProducto()"
+    >{{botonAccion}}</button>
+</mat-dialog-actions>
+
+
+
+
+
+
