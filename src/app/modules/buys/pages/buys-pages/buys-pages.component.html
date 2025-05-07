@@ -1,1 +1,213 @@
-<p>buys-pages works!</p>
+<div class="min-h-screen bg-gray-50 p-4 md:p-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Sección izquierda - Formulario de productos -->
+    <div class="lg:col-span-1">
+      <mat-card class="shadow-md h-full">
+        <mat-card-header class="bg-[#0F172A] p-4">
+          <mat-card-title class="text-white">Agregar Productos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <form [formGroup]="formularioProductosCompra" class="space-y-4">
+
+            <!-- Campo Proveedor -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Proveedor</label>
+              <mat-form-field appearance="outline" class="w-full">
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Buscar proveedor..."
+                  [matAutocomplete]="autoProveedor"
+                  formControlName="proveedor"
+                >
+                <mat-icon matSuffix class="text-gray-400">person_search</mat-icon>
+              </mat-form-field>
+              <mat-autocomplete
+                #autoProveedor="matAutocomplete"
+                (optionSelected)="proveedorParaCompra($event)"
+                [displayWith]="mostrarProveedor">
+                <mat-option *ngFor="let prov of listaProveedorFiltro" [value]="prov">
+                  {{ prov.nombre }}
+                 </mat-option>
+              </mat-autocomplete>
+            </div>
+
+            <!-- Campo Producto -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Producto</label>
+              <mat-form-field appearance="outline" class="w-full">
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Buscar producto..."
+                  [matAutocomplete]="autoProducto"
+                  formControlName="producto"
+                >
+                <mat-icon matSuffix class="text-gray-400">search</mat-icon>
+              </mat-form-field>
+              <mat-autocomplete
+                #autoProducto="matAutocomplete"
+                (optionSelected)="productoParaCompra($event)"
+                [displayWith]="mostrarProducto">
+                <mat-option *ngFor="let item of listaProductosFiltro" [value]="item">
+                  {{ item.descripcionProducto }} - Presentación: {{ item.descripcionPresentacion }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+
+            <!-- Presentación (readonly) -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Presentación</label>
+              <mat-form-field appearance="outline" class="w-full">
+                <input
+                  matInput
+                  formControlName="presentacion"
+                  readonly
+                  class="py-2 bg-gray-100">
+              </mat-form-field>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="space-y-2 text-center">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="cantidadInput"
+                  formControlName="cantidad"
+                  mode="decimal"
+                  [min]="1"
+                  [showButtons]="true"
+                  buttonLayout="horizontal"
+                  incrementButtonIcon="pi pi-plus"
+                  decrementButtonIcon="pi pi-minus"
+                  inputStyleClass="w-full"
+                  styleClass="w-full"
+                  placeholder="Cantidad"
+                />
+              </span>
+              <small class="text-red-500" *ngIf="formularioProductosCompra.get('cantidad')?.hasError('required') && formularioProductosCompra.get('cantidad')?.touched">
+                La cantidad es requerida.
+              </small>
+              <small class="text-red-500" *ngIf="formularioProductosCompra.get('cantidad')?.hasError('min') && formularioProductosCompra.get('cantidad')?.touched">
+                La cantidad debe ser al menos 1.
+              </small>
+            </div>
+
+            <!-- Botón Agregar -->
+            <div class="pt-4">
+              <button
+                pButton
+                label="Agregar al Carrito"
+                icon="pi pi-cart-plus"
+                class="w-full !py-3 flex items-center justify-center gap-2 !rounded-lg"
+                (click)="agregarProductoParaCompra()"
+                [disabled]="!formularioProductosCompra.valid || !productoSeleccionado">
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Sección derecha - Detalle de compra -->
+    <div class="lg:col-span-2">
+      <mat-card class="shadow-md h-full">
+        <mat-card-header class="bg-[#0F172A] p-4">
+          <mat-card-title class="text-white">Detalle de Compra</mat-card-title>
+          <mat-card-subtitle class="text-blue-100" *ngIf="proveedorSeleccionado">
+            Proveedor: {{proveedorSeleccionado.nombre}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="p-0">
+
+          <!-- Tabla de productos -->
+          <div class="overflow-x-auto">
+            <p-table
+              [value]="listaProductosParaCompra"
+              [paginator]="true"
+              [rows]="5"
+              styleClass="p-datatable-striped p-datatable-gridlines">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-producto>
+                <tr>
+                  <td>{{producto.descripcionProductoEmpaque}}</td>
+                  <td>{{producto.cantidad}}</td>
+                  <td>{{producto.precioTexto | currency}}</td>
+                  <td>{{producto.totalTexto | currency}}</td>
+                  <td>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="eliminarProducto(producto)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="5" class="!py-8 !text-center">
+                    <div class="flex flex-col items-center justify-center text-gray-400">
+                      <mat-icon class="!text-4xl mb-2">remove_shopping_cart</mat-icon>
+                      <p class="text-lg">No hay productos agregados</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <!-- Sección inferior - Total y botón -->
+          <div class="border-t border-gray-200 p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <!-- Método de pago -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Método de Pago</label>
+                <p-select
+                  [options]="metodosPago"
+                  [(ngModel)]="tipoPagoDefecto"
+                  optionLabel="label"
+                  placeholder="Seleccione método de pago"
+                  styleClass="w-full">
+                </p-select>
+              </div>
+
+              <!-- Total -->
+              <div class="flex flex-col items-end">
+                <div class="text-lg font-semibold text-gray-700 mb-2">Total a Pagar:</div>
+                <div class="text-2xl font-bold text-blue-600">
+                  {{totalApagar | currency}}
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón Registrar -->
+            <div class="mt-6 flex justify-end">
+              <p-button
+                icon="pi pi-check"
+                label="Registrar Compra"
+                styleClass="p-button-success"
+                [loading]="bloquearBotonRegistro"
+                [disabled]="listaProductosParaCompra.length === 0 || !proveedorSeleccionado"
+                (onClick)="registrarCompra()">
+              </p-button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+
+
