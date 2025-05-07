@@ -1,1 +1,212 @@
-<p>dashboard-pages works!</p>
+<div class="min-h-screen bg-gray-50 p-6">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+    <p-card class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Ingresos Totales</p>
+          <p class="text-3xl font-bold text-slate-900 mt-2">${{ totalIngresos }}</p>
+          <p class="text-xs mt-2 text-green-600 flex items-center">
+            <span class="pi pi-arrow-up text-xs mr-1"></span>
+            <span>5.2% vs semana anterior</span>
+            </p>
+        </div>
+        <div class="bg-indigo-100 p-3 rounded-full">
+          <i class="pi pi-wallet text-2xl text-indigo-600"></i>
+        </div>
+      </div>
+    </p-card>
+
+
+    <p-card class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Ventas Totales</p>
+          <p class="text-3xl font-bold text-slate-900 mt-2">{{ totalVentas }}</p>
+          <p class="text-xs mt-2 text-green-600 flex items-center">
+            <span class="pi pi-arrow-up text-xs mr-1"></span>
+            <span>3.8% vs semana anterior</span>
+          </p>
+        </div>
+        <div class="bg-sky-100 p-3 rounded-full">
+          <i class="pi pi-shopping-cart text-2xl text-sky-600"></i>
+        </div>
+      </div>
+    </p-card>
+
+
+    <p-card class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Productos en Stock</p>
+          <p class="text-3xl font-bold text-slate-900 mt-2">{{ totalProductos }}</p>
+          <!-- <p class="text-xs mt-2 text-amber-600 flex items-center" *ngIf="productosStockBajo && productosStockBajo.length > 0">
+            <span class="pi pi-exclamation-triangle text-xs mr-1"></span>
+            <span>{{ productosStockBajo.length }} con stock bajo</span>
+          </p> -->
+           <p class="text-xs mt-2 text-slate-500 flex items-center">
+            <span class="pi pi-check-circle text-xs mr-1 text-green-500"></span>
+            <span>Todo el stock OK</span>
+          </p>
+        </div>
+         <div class="bg-emerald-100 p-3 rounded-full">
+          <i class="pi pi-box text-2xl text-emerald-600"></i>
+        </div>
+      </div>
+    </p-card>
+
+
+    <p-card class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Usuarios Registrados</p>
+          <p class="text-3xl font-bold text-slate-900 mt-2">{{ totalUsuarios }}</p>
+          <p class="text-xs mt-2 text-slate-500 flex items-center">
+            <span class="pi pi-user-plus text-xs mr-1"></span> <span>2.1% nuevos este mes</span>
+          </p>
+        </div>
+         <div class="bg-orange-100 p-3 rounded-full">
+          <i class="pi pi-users text-2xl text-orange-600"></i>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+    <div class="lg:col-span-2">
+      <p-card styleClass="bg-white rounded-lg shadow-md h-full">
+        <ng-template pTemplate="title">
+            <span class="text-lg font-semibold text-slate-800">Rendimiento Semanal</span>
+        </ng-template>
+         <ng-template pTemplate="subtitle">
+            <span class="text-sm text-slate-500">Ingresos vs Ganancias (últimos 7 días)</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+           <div class="relative h-72 md:h-96">
+              <canvas baseChart class="w-full h-full"
+                [type]="'bar'"
+                [data]="barChartData"
+                [options]="barChartOptions">
+              </canvas>
+            </div>
+        </ng-template>
+      </p-card>
+    </div>
+
+
+    <div>
+      <p-card header="Productos más vendidos">
+        <p-table [value]="productosMasVendidos" [paginator]="true" [rows]="5"
+                   [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first}-{last} de {totalRecords}"
+                   [rowsPerPageOptions]="[5,10,15]" styleClass="p-datatable-sm p-datatable-striped" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                 <th pSortableColumn="nombre" class="text-left text-xs font-semibold text-slate-500 uppercase bg-slate-50 p-3">Producto <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="cantidadVendida" class="text-right text-xs font-semibold text-slate-500 uppercase bg-slate-50 p-3" style="width:100px">Ventas <p-sortIcon field="cantidadVendida"></p-sortIcon></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto let-i="rowIndex">
+              <tr>
+                 <td class="p-3 text-sm text-slate-700">
+                  <div class="flex items-center">
+                     <span>{{ producto.nombre }}</span>
+                  </div>
+                </td>
+                <td class="text-right p-3 text-sm text-slate-700">
+                   <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': producto.cantidadVendida > 50,
+                          'bg-sky-100 text-sky-800': producto.cantidadVendida <= 50
+                        }">
+                    {{ producto.cantidadVendida }}
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="2" class="text-center text-slate-500 p-6">
+                  <i class="pi pi-inbox text-2xl text-slate-400 mb-2"></i>
+                  <p>No hay productos para mostrar.</p>
+                </td>
+              </tr>
+            </ng-template>
+             <ng-template pTemplate="paginatorleft">
+                <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text"></p-button> -->
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                 <!-- <p-button type="button" icon="pi pi-download" styleClass="p-button-text"></p-button> -->
+            </ng-template>
+          </p-table>
+      </p-card>
+    </div>
+  </div>
+
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <p-card header="Inventario bajo">
+      <ng-template pTemplate="content">
+        <p-table [value]="productosStockBajo" [paginator]="true" [rows]="5"
+                 styleClass="p-datatable-sm p-datatable-striped" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-left text-xs font-semibold text-slate-500 uppercase bg-slate-50 p-3">Producto</th>
+              <th class="text-right text-xs font-semibold text-slate-500 uppercase bg-slate-50 p-3">Stock Actual</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-producto>
+            <tr>
+              <td class="p-3 text-lg text-slate-700 font-semibold">{{ producto.nombre }}</td>
+              <td class="text-right p-3 text-sm text-red-600 font-bold">{{ producto.stockActual }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="2" class="text-center text-slate-500 p-6">
+                <i class="pi pi-check-circle text-2xl text-green-400 mb-2"></i>
+                <p>No hay productos con inventario bajo.</p>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        </ng-template>
+    </p-card>
+    <p-card styleClass="bg-white rounded-lg shadow-md">
+        <ng-template pTemplate="title">
+            <span class="text-lg font-semibold text-slate-800">Acciones Rápidas</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="grid grid-cols-2 gap-4">
+            <button pButton icon="pi pi-plus" label="Nuevo Producto"
+                    class="p-button-success p-button-raised w-full" ></button>
+            <button pButton icon="pi pi-file-export" label="Exportar"
+                    class="p-button-info p-button-raised w-full" ></button>
+            <button pButton icon="pi pi-chart-line" label="Ver Reportes"
+                     class="p-button-secondary p-button-raised w-full"></button> <button pButton icon="pi pi-bell" label="Ver Alertas"
+                     class="p-button-warning p-button-raised w-full"></button>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200">
+            <p class="text-sm font-medium text-slate-600 mb-3">Actividad Reciente:</p>
+            <ul class="space-y-3">
+              <li class="flex items-start text-sm text-slate-600">
+                <i class="pi pi-check-circle text-green-500 mr-2 mt-0.5 flex-shrink-0"></i>
+                <span>Reporte de ventas <span class="font-semibold">semanal</span> generado hoy a las 10:15 AM</span>
+              </li>
+              <li class="flex items-start text-sm text-slate-600">
+                <i class="pi pi-plus-circle text-blue-500 mr-2 mt-0.5 flex-shrink-0"></i>
+                <span>Producto <span class="font-semibold">"Aguardiente Amarillo"</span> agregado ayer.</span>
+              </li>
+               <li class="flex items-start text-sm text-slate-500 opacity-75">
+                <i class="pi pi-sync text-slate-400 mr-2 mt-0.5 flex-shrink-0"></i>
+                <span>Sincronización de inventario completada hace 2 horas.</span>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+    </p-card>
+  </div>
+</div>
+
