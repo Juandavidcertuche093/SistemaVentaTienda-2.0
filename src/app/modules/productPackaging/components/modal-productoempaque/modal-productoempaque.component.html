@@ -1,0 +1,100 @@
+<h2 mat-dialog-title class="text-center text-lg font-semibold">
+  {{ tituloAccion }} Empaque
+  </h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formularioProductoEnpaque" class="space-y-4">
+
+
+    <!-- Categoría -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Producto</mat-label>
+      <mat-select formControlName="idProducto">
+        <mat-option *ngFor="let item of listaProductos" [value]="item.idProducto">
+          {{ item.nombre}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProductoEnpaque.get('idProducto')?.hasError('required')">
+        El producto es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Proveedor -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Presentacion</mat-label>
+      <mat-select formControlName="idPresentacion">
+        <mat-option *ngFor="let item of listaPresentacion" [value]="item.idPresentacion">
+          {{ item.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProductoEnpaque.get('idPresentacion')?.hasError('required')">
+        La presentacion es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" formControlName="cantidad" autocomplete="off" />
+      <mat-icon matSuffix>numbers</mat-icon>
+      <mat-error *ngIf="formularioProductoEnpaque.get('cantidad')?.hasError('required')">
+        La cantidad es requerida.
+      </mat-error>
+      <mat-error *ngIf="formularioProductoEnpaque.get('cantidad')?.hasError('positivo')">
+        La cantidad debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Precio de Compra</mat-label>
+      <input matInput type="number" formControlName="precioCompra" autocomplete="off" />
+      <mat-icon matSuffix>attach_money</mat-icon>
+      <mat-error *ngIf="formularioProductoEnpaque.get('precioCompra')?.hasError('required')">
+        El precio es requerido.
+      </mat-error>
+      <mat-error *ngIf="formularioProductoEnpaque.get('precioCompra')?.hasError('positivo')">
+        El precio debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Precio de venta</mat-label>
+      <input matInput type="number" formControlName="precioVenta" autocomplete="off" />
+      <mat-icon matSuffix>attach_money</mat-icon>
+      <mat-error *ngIf="formularioProductoEnpaque.get('precioVenta')?.hasError('required')">
+        El precio es requerido.
+      </mat-error>
+      <mat-error *ngIf="formularioProductoEnpaque.get('precioVenta')?.hasError('positivo')">
+        El precio debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Estado -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="esActivo">
+        <mat-option value="1">Activo</mat-option>
+        <mat-option value="0">No activo</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formularioProductoEnpaque.get('esActivo')?.hasError('required')">
+        El estado es requerido.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pt-4">
+  <button mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formularioProductoEnpaque.invalid"
+    (click)="guardarEditar_ProductoEnpaque()"
+  >
+    {{ botonAccion }}
+  </button>
+</mat-dialog-actions>
+
+
